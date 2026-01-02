@@ -12,7 +12,7 @@ app.get('/logo.svg', (req, res) => {
     res.sendFile(path.join(__dirname, 'logo.svg'));
 });
 
-// Ruta de descàrrega per a YifySubtitles (ZIP -> SRT)
+// Ruta de descàrrega genèrica per a ZIPs (Yify, Podnapisi, etc.)
 app.get('/download/yify/:base64Url', async (req, res) => {
     try {
         const { base64Url } = req.params;
@@ -20,7 +20,13 @@ app.get('/download/yify/:base64Url', async (req, res) => {
         
         console.log(`[Server] Descarregant i extraient ZIP de: ${zipUrl}`);
 
-        const response = await axios.get(zipUrl, { responseType: 'arraybuffer' });
+        // Afegim headers per semblar un navegador (Podnapisi a vegades ho requereix)
+        const response = await axios.get(zipUrl, { 
+            responseType: 'arraybuffer',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+        });
         const zip = new AdmZip(response.data);
         const zipEntries = zip.getEntries();
 
