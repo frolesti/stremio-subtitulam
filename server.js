@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
         <html lang="ca">
         <head>
             <meta charset="UTF-8">
-            <title>Stremio Subtitul'am</title>
+            <title>Stremio Subtitula'm</title>
             <link rel="icon" href="/logo.svg" type="image/svg+xml">
             <style>
                 body { 
@@ -64,7 +64,7 @@ app.get('/', (req, res) => {
         </head>
         <body>
             <img src="/logo.svg" alt="Logo" class="logo">
-            <h1>Stremio Subtitul'am</h1>
+            <h1>Stremio Subtitula'm</h1>
             <div class="description">
                 <p>Aquest addon cerca subtítols en català per a pel·lícules i sèries.</p>
             </div>

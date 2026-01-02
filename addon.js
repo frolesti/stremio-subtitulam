@@ -4,7 +4,7 @@ const { getAllSubtitles } = require("./providers");
 const manifest = {
     "id": "org.stremio.subtitulam",
     "version": "1.0.0",
-    "name": "Subtitul'am",
+    "name": "Subtitula'm",
     "description": "Subtítols en català per a pel·lícules i sèries.",
     "resources": [
         "subtitles"
