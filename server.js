@@ -3,11 +3,45 @@ const addonInterface = require("./addon");
 const { getDownloadLink } = require("./providers/opensubtitles");
 const express = require('express');
 const path = require('path');
+const axios = require('axios');
+const AdmZip = require('adm-zip');
 const app = express();
 
 // Servim el logo estàticament
 app.get('/logo.svg', (req, res) => {
     res.sendFile(path.join(__dirname, 'logo.svg'));
+});
+
+// Ruta de descàrrega per a YifySubtitles (ZIP -> SRT)
+app.get('/download/yify/:base64Url', async (req, res) => {
+    try {
+        const { base64Url } = req.params;
+        const zipUrl = Buffer.from(base64Url, 'base64').toString('utf-8');
+        
+        console.log(`[Server] Descarregant i extraient ZIP de: ${zipUrl}`);
+
+        const response = await axios.get(zipUrl, { responseType: 'arraybuffer' });
+        const zip = new AdmZip(response.data);
+        const zipEntries = zip.getEntries();
+
+        // Busquem el primer fitxer .srt
+        const srtEntry = zipEntries.find(entry => entry.entryName.endsWith('.srt'));
+
+        if (srtEntry) {
+            const srtContent = zip.readAsText(srtEntry);
+            
+            // Servim el fitxer com a SRT
+            res.setHeader('Content-Type', 'application/x-subrip');
+            res.setHeader('Content-Disposition', `attachment; filename="${srtEntry.entryName}"`);
+            res.send(srtContent);
+        } else {
+            res.status(404).send('No s\'ha trobat cap fitxer .srt dins del ZIP.');
+        }
+
+    } catch (error) {
+        console.error("[Server] Error processant Yify ZIP:", error.message);
+        res.status(500).send('Error processant el subtítol.');
+    }
 });
 
 // Ruta de descàrrega per a OpenSubtitles
