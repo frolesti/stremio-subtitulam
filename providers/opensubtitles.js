@@ -2,11 +2,11 @@ const OpenSubtitles = require('opensubtitles.com');
 
 // TODO: Necessitem una API Key d'OpenSubtitles.com
 // Pots aconseguir-ne una a https://www.opensubtitles.com/en/consumers
-const API_KEY = process.env.OPENSUBTITLES_API_KEY || 'YOUR_API_KEY_HERE';
+const API_KEY = process.env.OPENSUBTITLES_API_KEY || '9ZFFImSnPEzuEAnTToJIrBsM5efv7InQ';
 
 const os = new OpenSubtitles({
     apikey: API_KEY,
-    useragent: 'StremioSubtitulam v1.0' // UserAgent obligatori
+    useragent: 'stremiocat v1.0' // UserAgent obligatori
 });
 
 async function searchOpenSubtitles(type, id) {
