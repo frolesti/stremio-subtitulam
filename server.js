@@ -1,5 +1,6 @@
 const { getRouter } = require("stremio-addon-sdk");
 const addonInterface = require("./addon");
+const { getDownloadLink } = require("./providers/opensubtitles");
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -7,6 +8,20 @@ const app = express();
 // Servim el logo estàticament
 app.get('/logo.svg', (req, res) => {
     res.sendFile(path.join(__dirname, 'logo.svg'));
+});
+
+// Ruta de descàrrega per a OpenSubtitles
+app.get('/download/opensubtitles/:fileId', async (req, res) => {
+    const { fileId } = req.params;
+    console.log(`[Server] Sol·licitud de descàrrega per al fitxer ${fileId}`);
+    
+    const link = await getDownloadLink(fileId);
+    
+    if (link) {
+        res.redirect(link);
+    } else {
+        res.status(404).send('Subtítol no trobat o error en obtenir l\'enllaç.');
+    }
 });
 
 // Servim l'addon utilitzant el middleware de l'SDK

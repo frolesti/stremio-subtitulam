@@ -1,4 +1,5 @@
 const { addonBuilder } = require("stremio-addon-sdk");
+const { getAllSubtitles } = require("./providers");
 
 const manifest = {
     "id": "org.stremio.subtitulam",
@@ -19,10 +20,14 @@ const builder = new addonBuilder(manifest);
 
 builder.defineSubtitlesHandler(async ({ type, id, extra }) => {
     console.log("request for subtitles: " + type + " " + id);
-    // Aquí implementarem la lògica de cerca de subtítols
-    // id sol ser l'IMDb ID (tt1234567) o altres formats
     
-    return Promise.resolve({ subtitles: [] });
+    try {
+        const subtitles = await getAllSubtitles(type, id);
+        return Promise.resolve({ subtitles: subtitles });
+    } catch (error) {
+        console.error("Error general cercant subtítols:", error);
+        return Promise.resolve({ subtitles: [] });
+    }
 });
 
 module.exports = builder.getInterface();
