@@ -1,0 +1,23 @@
+{
+  "name": "stremio-subtitulam",
+  "version": "1.0.0",
+  "description": "Stremio addon for Catalan subtitles",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "stremio",
+    "addon",
+    "catalan",
+    "subtitles"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "stremio-addon-sdk": "^1.6.10",
+    "axios": "^1.6.0"
+  }
+}
